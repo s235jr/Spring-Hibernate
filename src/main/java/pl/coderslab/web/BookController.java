@@ -1,8 +1,10 @@
 package pl.coderslab.web;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.dao.AuthorDao;
 import pl.coderslab.dao.BookDao;
@@ -10,8 +12,13 @@ import pl.coderslab.dao.PublisherDao;
 import pl.coderslab.entity.Author;
 import pl.coderslab.entity.Book;
 import pl.coderslab.entity.Publisher;
+import pl.coderslab.entity.ValidateBook;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class BookController {
@@ -19,6 +26,9 @@ public class BookController {
     private final BookDao bookDao;
     private final AuthorDao authorDao;
     private final PublisherDao publisherDao;
+
+    @Autowired
+    Validator validator;
 
     public BookController(BookDao bookDao, AuthorDao authorDao, PublisherDao publisherDao) {
         this.bookDao = bookDao;
@@ -50,7 +60,11 @@ public class BookController {
     }
 
     @RequestMapping(value = "/addbook", method = RequestMethod.POST)
-    public String saveBook(@ModelAttribute Book book) {
+    public String saveBook(@Valid Book book, BindingResult result) {
+        System.out.println(book);
+        if (result.hasErrors()) {
+            return "bookForm";
+        }
         bookDao.save(book);
         return "redirect:/books";
     }
@@ -85,6 +99,7 @@ public class BookController {
     @RequestMapping(value = "/editbook{param}", method = RequestMethod.POST)
     public String editBook(@PathVariable long param, @ModelAttribute Book book) {
         book.setId(param);
+        System.out.println(book.toString());
         bookDao.update(book);
         return "redirect:/books";
     }

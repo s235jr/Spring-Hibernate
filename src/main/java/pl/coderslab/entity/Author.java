@@ -1,5 +1,7 @@
 package pl.coderslab.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,7 +12,9 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
 
     @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)

@@ -5,27 +5,27 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class ValidateBook {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @Size(min =5)
     private String title;
-    @NotBlank
     private String isbn;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Author> authors = new ArrayList<>();
-    @ManyToOne
-    private Publisher publisher;
-    @Range(min=0, max=10)
+    @NotBlank
+    private String authors;
+    @NotBlank
+    private String publisher;
+    @Range(min =1, max=10)
     private int rating;
-
+    @Size(max=600)
+    private String description;
 
     public Long getId() {
         return id;
@@ -51,24 +51,20 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public List<Author> getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(String authors) {
         this.authors = authors;
     }
 
-    public Publisher getPublisher() {
+    public String getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(Publisher publisher) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
-    }
-
-    public void addAuthorsToList(Author author) {
-        this.authors.add(author);
     }
 
     public int getRating() {
@@ -79,14 +75,11 @@ public class Book {
         this.rating = rating;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", publisher=" + publisher +
-                ", rating=" + rating +
-                '}';
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

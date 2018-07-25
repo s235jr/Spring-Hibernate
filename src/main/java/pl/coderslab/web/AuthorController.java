@@ -34,7 +34,7 @@ public class AuthorController {
     @RequestMapping(value = "/addauthor", method = RequestMethod.POST)
     public String addAuthor(@ModelAttribute Author author) {
         authorDao.save(author);
-        return "redirect:/authorList";
+        return "redirect:/authors";
     }
 
     @ResponseBody

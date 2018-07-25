@@ -1,13 +1,24 @@
 package pl.coderslab.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pl.coderslab.dao.PersonDao;
 import pl.coderslab.entity.Person;
 
+import javax.validation.Valid;
+import javax.validation.Validator;
+
 @Controller
 public class PersonController {
+
+    @Autowired
+    Validator validator;
 
     private final PersonDao personDao;
 
@@ -15,24 +26,23 @@ public class PersonController {
         this.personDao = personDao;
     }
 
-    @RequestMapping(value = "/addperson", method = RequestMethod.GET)
+    @RequestMapping(value = "/addperson")
     public String addPerson(Model model) {
         Person person = new Person();
         model.addAttribute("person", person);
-        personDao.save(person);
         return "addPerson";
     }
-    @ResponseBody
-    @RequestMapping(value = "/addperson", method = RequestMethod.POST)
-    public String savePerson(Model model, @RequestParam String login,
-                           @RequestParam String email, @RequestParam String password) {
 
-        Person person = new Person();
-        person.setLogin(login);
-        person.setEmail(email);
-        person.setPassword(password);
-        personDao.save(person);
-        return person.toString();
+    @RequestMapping(value = "/addperson", method = RequestMethod.POST)
+    public String savePerson(@Valid Person person, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("person", person);
+            return "addPerson";
+        } else {
+            personDao.save(person);
+        }
+        return "redirect:/persons";
     }
 
     @ResponseBody
@@ -61,12 +71,9 @@ public class PersonController {
         return "--edit--";
     }
 
-    //@ResponseBody
     @RequestMapping("/persons")
     public String getList(Model model) {
         model.addAttribute("persons", personDao.getAll());
         return "personlist";
     }
-
-
 }
