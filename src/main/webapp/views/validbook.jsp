@@ -7,18 +7,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Student</title>
+    <title>Book</title>
 </head>
 <body>
-<h1>Add student</h1>
 
-<form:form method="post" modelAttribute="student">
-    <form:input path="firstName"/>
-    <form:input path="lastName" />
-    <input type="submit" value="Save">
-</form:form>
-
+<table border="3px">
+    <c:forEach items="${valid}" var="valid">
+        <tr>
+        <td><c:out value="${valid.propertyPath}"></c:out></td>
+        <td><c:out value="${valid.message}"></c:out></td>
+        </tr>
+    </c:forEach>
+</table>
 </body>
 </html>

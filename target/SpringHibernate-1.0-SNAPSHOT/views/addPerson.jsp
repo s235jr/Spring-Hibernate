@@ -15,10 +15,19 @@
 <h1>Add Person</h1>
 
 <form:form method="post" modelAttribute="person">
-    <form:input path="login" title="Login"  />
-    <form:input path="email" title="Email"/>
-    <form:password path="password" title="Password" />
-    <input type="submit" value="Save">
+    <div><label>Login</label>
+        <form:input path="login" title="Login"/>
+        <form:errors path="login"/></div>
+    <div>
+        <label>Email</label>
+        <form:input path="email" title="Email"/>
+        <form:errors path="email"/>
+    </div>
+    <div>
+        <label>Passoword</label>
+        <form:password path="password" title="Password"/></div>
+    <div>
+        <input type="submit" value="Save"></div>
 </form:form>
 
 </body>

@@ -16,7 +16,6 @@ public class Author {
     private String firstName;
     @NotBlank
     private String lastName;
-
     @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private List<Book> bookList;
 

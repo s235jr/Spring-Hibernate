@@ -14,13 +14,17 @@
 <body>
 
 <form:form method="post" modelAttribute="book">
-    <div>Title<form:input path="title"/></div>
-    <div>ISBN<form:input path="isbn"/></div>
+    <div>Title<form:input path="title"/>
+        <form:errors path="title"/></div>
+
+    <div>ISBN<form:input path="isbn"/>
+        <form:errors path="isbn"/></div>
 
     <div>Authors<form:select itemLabel="lastName" itemValue="id" items="${authors}" path="authors"
                              multiple="true"/></div>
     <div>Publisher<form:select itemLabel="name" itemValue="id" path="publisher" items="${publisher}"/></div>
-    <div>Rating<form:input path="rating"/></div>
+    <div>Rating<form:input path="rating"/>
+        <form:errors path="rating"/></div>
     <input type="submit" value="Save">
 </form:form>
 
